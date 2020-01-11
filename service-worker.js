@@ -2,10 +2,11 @@ const cacheName = 'cache-v1';
 const filesToCache = [
     '/',
     'index.html',
+    'index.js',
     'styles/main.css',
     'images/space1.jpg',
     'images/space2.jpg',
-    'images/space3.jpg'
+    'images/space3.jpg',
 ];
 // installing service worker
 self.addEventListener('install', function(e) {

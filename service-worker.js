@@ -9,6 +9,7 @@ const filesToCache = [
 ];
 // installing service worker
 self.addEventListener('install', function(e) {
+    self.skipWaiting();
     console.log('installing service worker')
  e.waitUntil( 
      caches.open(cacheName).then(cache => {
@@ -17,5 +18,30 @@ self.addEventListener('install', function(e) {
  )
 })
 // activating the sevice worker
+self.addEventListener('activate', function(e) {
+    console.log('activating service workers')
+  e.waitUntil( 
+      caches.keys().then(keyList => {
+          return Promise.all(keyList.map( key => {
+              if(key !== cacheName) return caches.delete(key);
+          }))
+      }
+      )
+  )
+});
+// fetching data
+self.addEventListener('fetch', function(e) {
+    console.log('fetching data')
+  e.respondWith(
+      caches.match(e.request).then(response =>{
+         if(response) {
+             return response;
+         } else {
+             return fetch(e.request.url);
+         }
 
+      })
+  ) ;
+
+});
 
